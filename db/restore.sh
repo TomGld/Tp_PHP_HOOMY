@@ -1,4 +1,4 @@
 #!/usr/bin/sh
  
- mariadb symfony -uroot -psuperAdmin < /root/init.sql
+ mariadb hoomy -uroot -psuperAdmin < /root/init.sql
  echo "Restauration terminée"

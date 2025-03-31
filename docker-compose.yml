@@ -8,7 +8,7 @@
      restart: always # redémarrage automatique
      ports:
        # ports exposés
-       - "80:82"
+       - "8080:80"
      volumes:
        # volumes montés
        - ./www:/var/www/html
