@@ -1,3 +1,4 @@
+-- Active: 1737462178783@@127.0.0.1@3308@hoomy
 # si ca ne fonctionne pas: 
  # nano ~/.bashrc
  
@@ -29,3 +30,6 @@
  alias db-export='sudo docker exec $(docker ps --format '{{.Names}}' | grep mariadb) /root/backup.sh'
  # alias pour importer un snap de la base de données
  alias db-import='sudo docker exec $(docker ps --format '{{.Names}}' | grep mariadb) /root/restore.sh'
+
+ #alias sudo chmod 777 -R ./
+ alias s777='sudo chmod 777 -R ./'
