@@ -9,3 +9,8 @@ Installer easyadmin
 
 Installer Appfixtures
 - ccomposer require --dev orm-fixtures
+
+Effectuer :
+- nnpm
+- npm i
+- npm run dev
