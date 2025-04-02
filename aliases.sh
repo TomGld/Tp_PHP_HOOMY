@@ -1,4 +1,3 @@
--- Active: 1737462178783@@127.0.0.1@3308@hoomy
 # si ca ne fonctionne pas: 
  # nano ~/.bashrc
  
@@ -33,3 +32,5 @@
 
  #alias sudo chmod 777 -R ./
  alias s777='sudo chmod 777 -R ./'
+
+ alias ccc='cconsole cache:clear'
