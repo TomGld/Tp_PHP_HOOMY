@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Image;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -46,6 +48,11 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToUrl('Aller sur le Swagger', 'fa fa-code', 'http://localhost:8080/api')->setLinkTarget('_blank');;
+        yield MenuItem::linkToUrl('Aller sur le Swagger', 'fa fa-code', 'http://localhost:8080/api')->setLinkTarget('_blank');
+
+        yield MenuItem::subMenu('Image', 'fa fa-tags')->setSubItems([
+            MenuItem::linkToCrud('Ajouter une image', 'fa fa-plus-circle', Image::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Voir les images', 'fa fa-eye', Image::class)
+        ]);
     }
 }
