@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
             [
                 'name' => 'admin',
                 'password' => 'admin1',
-                'roles' => ['ROLE_ADMIN']
+                'roles' => ["ROLE_ADMIN"]
             ],
         ];
 
