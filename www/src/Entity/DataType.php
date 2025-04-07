@@ -26,9 +26,6 @@ class DataType
     #[ORM\OneToMany(targetEntity: SettingType::class, mappedBy: 'dataType')]
     private Collection $settingTypes;
 
-    #[ORM\Column(length: 25)]
-    private ?string $label = null;
-
     public function __construct()
     {
         $this->settingTypes = new ArrayCollection();
@@ -77,18 +74,6 @@ class DataType
                 $settingType->setDataType(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    public function setLabel(string $label): static
-    {
-        $this->label = $label;
 
         return $this;
     }
