@@ -37,11 +37,11 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('<img src="/images/logoX2.png" alt="logo du site" style="text-align: center;" >  
+            ->setTitle('<img src="/images/logo/logoX2.png" alt="logo du site" style="text-align: center;" >  
             <span style="font-size: 22px; color: #F08A4F; font-weight: bold; margin-top: 10px; display: inline-block; text-align: center; width: 100%;">Administration</span>
             ')
 
-            ->setFaviconPath('images/logoSmallX2.png')
+            ->setFaviconPath('images/logo/logoSmallX2.png')
             ->renderContentMaximized(); // utilise tout l'espace de l'écran
     }
 
@@ -50,9 +50,32 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToUrl('Aller sur le Swagger', 'fa fa-code', 'http://localhost:8080/api')->setLinkTarget('_blank');
 
-        yield MenuItem::subMenu('Image', 'fa fa-tags')->setSubItems([
-            MenuItem::linkToCrud('Ajouter une image', 'fa fa-plus-circle', Image::class)->setAction(Crud::PAGE_NEW),
-            MenuItem::linkToCrud('Voir les images', 'fa fa-eye', Image::class)
+        // Sous-menu pour Avatar
+        yield MenuItem::subMenu('Avatar', 'fa fa-user')->setSubItems([
+            MenuItem::linkToUrl('Ajouter un avatar', 'fa fa-plus-circle', $this->generateCrudUrl('avatars', Crud::PAGE_NEW)),
+            MenuItem::linkToUrl('Voir les avatars', 'fa fa-eye', $this->generateCrudUrl('avatars', Crud::PAGE_INDEX)),
         ]);
+
+        // Sous-menu pour Icône
+        yield MenuItem::subMenu('Icône', 'fa fa-icons')->setSubItems([
+            MenuItem::linkToUrl('Ajouter une icône', 'fa fa-plus-circle', $this->generateCrudUrl('icones', Crud::PAGE_NEW)),
+            MenuItem::linkToUrl('Voir les icônes', 'fa fa-eye', $this->generateCrudUrl('icones', Crud::PAGE_INDEX)),
+        ]);
+
+
+
+       
+    }
+
+    /**
+     * Génère une URL pour le CRUD avec un paramètre de catégorie.
+     */
+    private function generateCrudUrl(string $category, string $action): string
+    {
+        return $this->adminUrlGenerator
+            ->setController(ImageCrudController::class)
+            ->setAction($action)
+            ->set('category', $category)
+            ->generateUrl();
     }
 }
