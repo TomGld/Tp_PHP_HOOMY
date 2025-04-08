@@ -29,9 +29,16 @@ class Room
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'room')]
     private Collection $events;
 
+    /**
+     * @var Collection<int, Device>
+     */
+    #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'room')]
+    private Collection $devices;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->devices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,6 +92,36 @@ class Room
     {
         if ($this->events->removeElement($event)) {
             $event->removeRoom($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Device>
+     */
+    public function getDevices(): Collection
+    {
+        return $this->devices;
+    }
+
+    public function addDevice(Device $device): static
+    {
+        if (!$this->devices->contains($device)) {
+            $this->devices->add($device);
+            $device->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevice(Device $device): static
+    {
+        if ($this->devices->removeElement($device)) {
+            // set the owning side to null (unless already changed)
+            if ($device->getRoom() === $this) {
+                $device->setRoom(null);
+            }
         }
 
         return $this;
