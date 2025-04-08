@@ -38,6 +38,9 @@ class Device
     #[ORM\ManyToMany(targetEntity: SettingType::class, mappedBy: 'Device')]
     private Collection $settingTypes;
 
+    #[ORM\ManyToOne(inversedBy: 'devices')]
+    private ?Room $room = null;
+
     public function __construct()
     {
         $this->settingTypes = new ArrayCollection();
@@ -131,6 +134,18 @@ class Device
         if ($this->settingTypes->removeElement($settingType)) {
             $settingType->removeDevice($this);
         }
+
+        return $this;
+    }
+
+    public function getRoom(): ?Room
+    {
+        return $this->room;
+    }
+
+    public function setRoom(?Room $room): static
+    {
+        $this->room = $room;
 
         return $this;
     }
