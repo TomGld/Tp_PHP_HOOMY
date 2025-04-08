@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -41,7 +42,7 @@ class DeviceCrudController extends AbstractCrudController
                     'title' => 'Le type de l\'appareil doit contenir entre 1 et 50 caractères alphanumériques.',
                 ])
                 ->hideOnIndex(),
-                
+
             TextField::new('reference', 'Référence de l\'appareil')
                 ->setHelp('Référence de l\'appareil (ex: TH-1234)')
                 ->setFormTypeOption('attr', [
@@ -50,7 +51,7 @@ class DeviceCrudController extends AbstractCrudController
                     'title' => 'La référence de l\'appareil doit contenir entre 1 et 20 caractères alphanumériques.',
                 ])
                 ->hideOnIndex(),
-                
+
             TextField::new('brand', 'Marque de l\'appareil')
                 ->setHelp('Marque de l\'appareil (ex: BrandX)')
                 ->setFormTypeOption('attr', [
@@ -59,11 +60,18 @@ class DeviceCrudController extends AbstractCrudController
                     'title' => 'La marque de l\'appareil doit contenir entre 1 et 30 caractères alphanumériques.',
                 ])
                 ->hideOnIndex(),
-                
+
+                AssociationField::new('room', 'Salle')
+                    ->setHelp('Sélectionnez la salle à laquelle cet appareil est associé.')
+                    ->setFormTypeOption('attr', [
+                        'title' => 'Sélectionnez la salle à laquelle cet appareil est associé.',
+                    ])
+                    ->hideOnIndex(),
+
             BooleanField::new('isActive', 'Actif')
                 ->setHelp('Indique si l\'appareil est actif ou non.')
                 ->hideOnIndex(),
-                
+
 
         ];
     }
@@ -80,6 +88,7 @@ class DeviceCrudController extends AbstractCrudController
                     ->setIcon('fa fa-plus')
                     ->setLabel('Ajouter')
                     ->setCssClass('btn btn-success')
+                    ->setHtmlAttributes(['style' => 'background-color: #F08A4F;'])
             )
             ->update(
                 Crud::PAGE_INDEX,
@@ -101,6 +110,7 @@ class DeviceCrudController extends AbstractCrudController
                 Action::SAVE_AND_RETURN,
                 fn (Action $action) => $action
                     ->setLabel('Enregistrer et quitter')
+                    ->setHtmlAttributes(['style' => 'background-color: #F08A4F;'])
             )
             ->update(
                 Crud::PAGE_EDIT,
@@ -114,6 +124,7 @@ class DeviceCrudController extends AbstractCrudController
                 Action::SAVE_AND_RETURN,
                 fn (Action $action) => $action
                     ->setLabel('Enregistrer et quitter')
+                    ->setHtmlAttributes(['style' => 'background-color: #F08A4F;'])
             )
             ->update(
                 Crud::PAGE_NEW,
