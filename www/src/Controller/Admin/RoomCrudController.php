@@ -38,13 +38,8 @@ class RoomCrudController extends AbstractCrudController
                     'pattern' => '[A-Za-z0-9 ]{1,50}',
                     'title' => 'Le nom de la pièce doit contenir entre 1 et 50 caractères alphanumériques.',
                 ]),
-            AssociationField::new('image', 'Image de la pièce')
-                ->setHelp('Sélectionnez une image pour la pièce')
-                ->setFormTypeOption('attr', [
-                    'accept' => 'image/*',
-                    'title' => 'Sélectionnez une image au format PNG, JPG ou JPEG.',
-                ])
-                ->hideOnIndex(),
+                
+                // TODO: Associer une image
         ];
     }
 

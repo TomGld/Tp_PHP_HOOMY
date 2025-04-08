@@ -28,7 +28,7 @@ class DashboardController extends AbstractDashboardController
         $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
-    #[Route('/admin', name: 'admin')]
+    #[Route('/', name: 'admin')]
     public function index(): Response
     {
         //Redirection par defaut vers la liste des genres

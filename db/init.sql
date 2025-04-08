@@ -244,7 +244,7 @@ CREATE TABLE `room` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_729F519B3DA5256D` (`image_id`),
   CONSTRAINT `FK_729F519B3DA5256D` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +256,8 @@ LOCK TABLES `room` WRITE;
 INSERT INTO `room` VALUES
 (7,7,'Salon'),
 (8,8,'Chambre'),
-(9,9,'Cuisine');
+(9,9,'Cuisine'),
+(10,NULL,'chambre2');
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,7 +310,7 @@ CREATE TABLE `setting_type` (
   PRIMARY KEY (`id`),
   KEY `IDX_4D6A7BCFA147DA62` (`data_type_id`),
   CONSTRAINT `FK_4D6A7BCFA147DA62` FOREIGN KEY (`data_type_id`) REFERENCES `data_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +324,8 @@ INSERT INTO `setting_type` VALUES
 (12,12,'puissance'),
 (13,13,'couleur'),
 (14,14,'luminosité'),
-(15,15,'volume');
+(15,15,'volume'),
+(16,14,'macbook');
 /*!40000 ALTER TABLE `setting_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -469,4 +471,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-04-08  7:00:58
+-- Dump completed on 2025-04-08  9:56:18

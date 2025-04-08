@@ -43,6 +43,8 @@ class ProfileCrudController extends AbstractCrudController
                 ])
                 ->hideOnIndex()
                 ->hideOnDetail()
+
+                // TODO: Associer une image
         ];
     }
 
