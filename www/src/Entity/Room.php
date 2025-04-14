@@ -2,25 +2,51 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\RoomRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RoomRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
-#[ApiResource]
+#[ApiResource(
+//autorisation des route que l'on veut acceder
+operations: [
+    new Get(),
+    new GetCollection(),
+    new Patch()
+],
+normalizationContext: ['groups' => ['room:read']],
+denormalizationContext: ['groups' => ['room:write']]
+)]
+
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'iexact',
+        'id' => 'exact',
+    ]
+)]
 class Room
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['room:read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'room', cascade: ['persist', 'remove'])]
+    #[Groups(['room:read', 'room:write'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['room:read', 'room:write'])]
     private ?string $label = null;
 
     /**
