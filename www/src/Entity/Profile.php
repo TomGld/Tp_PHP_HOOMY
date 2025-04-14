@@ -2,29 +2,57 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProfileRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    //autorisation des route que l'on veut acceder
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Patch()
+    ],
+    normalizationContext: ['groups' => ['profile:read']],
+    denormalizationContext: ['groups' => ['profile:write']]
+)]
+
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'iexact',
+        'id' => 'exact',
+        'pinCode' => 'exact'
+    ]
+)]
 class Profile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['profile:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'profiles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['profile:read', 'profile:write'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['profile:read', 'profile:write'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['profile:read', 'profile:write'])]
     private ?int $pinCode = null;
 
     /**
