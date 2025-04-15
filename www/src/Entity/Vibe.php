@@ -3,13 +3,26 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\VibeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VibeRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    //autorisation des route que l'on veut acceder
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Patch()
+    ],
+    normalizationContext: ['groups' => ['vibe:read']],
+    denormalizationContext: ['groups' => ['vibe:write']]
+)]
 class Vibe
 {
     #[ORM\Id]
@@ -21,6 +34,7 @@ class Vibe
      * @var Collection<int, SettingData>
      */
     #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe')]
+    #[Groups(['vibe:read'])]
     private Collection $settingData;
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
@@ -29,19 +43,23 @@ class Vibe
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vibe:read'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['vibe:read'])]
     private ?string $label = null;
 
     /**
      * @var Collection<int, Event>
      */
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'vibe')]
+    #[Groups(['vibe:read'])]
     private Collection $events;
 
     #[ORM\OneToOne(inversedBy: 'vibe', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vibe:read'])]
     private ?Standard $standard = null;
 
     public function __construct()
