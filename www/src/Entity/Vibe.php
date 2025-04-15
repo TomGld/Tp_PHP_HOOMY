@@ -45,7 +45,8 @@ class Vibe
      * @var Collection<int, SettingData>
      */
     #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe')]
-    #[Groups(['vibe:read', 'vibe:write'])]
+
+    #[Groups(['vibe:read'])]
     private Collection $settingData;
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
@@ -55,23 +56,23 @@ class Vibe
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read', 'vibe:write'])]
+    #[Groups(['vibe:read'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['vibe:read', 'vibe:write'])]
+    #[Groups(['vibe:read'])]
     private ?string $label = null;
 
     /**
      * @var Collection<int, Event>
      */
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'vibe')]
-    #[Groups(['vibe:read', 'vibe:write'])]
+    #[Groups(['vibe:read'])]
     private Collection $events;
 
     #[ORM\OneToOne(inversedBy: 'vibe', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read', 'vibe:write'])]
+    #[Groups(['vibe:read'])]
     private ?Standard $standard = null;
 
     /**

@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StandardRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StandardRepository::class)]
 #[ApiResource]
@@ -13,18 +14,23 @@ class Standard
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['vibe:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['vibe:read'])]
     private ?int $security = null;
 
     #[ORM\Column]
+    #[Groups(['vibe:read'])]
     private ?int $energy = null;
 
     #[ORM\Column]
+    #[Groups(['vibe:read'])]
     private ?int $emotion = null;
 
     #[ORM\Column]
+    #[Groups(['vibe:read'])]
     private ?int $consciousness = null;
 
     #[ORM\OneToOne(mappedBy: 'standard', cascade: ['persist', 'remove'])]

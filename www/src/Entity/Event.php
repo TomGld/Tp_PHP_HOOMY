@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ApiResource]
@@ -23,18 +24,22 @@ class Event
     private ?Vibe $vibe = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['vibe:read'])]
     private ?string $label = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['vibe:read'])]
     private ?\DateTimeInterface $dateStart = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['vibe:read'])]
     private ?\DateTimeInterface $dateEnd = null;
 
     /**
      * @var Collection<int, Room>
      */
     #[ORM\ManyToMany(targetEntity: Room::class, inversedBy: 'events')]
+    #[Groups(['vibe:read'])]
     private Collection $room;
 
     public function __construct()
