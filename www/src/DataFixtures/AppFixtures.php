@@ -34,13 +34,13 @@ class AppFixtures extends Fixture
         $this->loadImages($manager);
         $this->loadUsers($manager);
         $this->loadProfiles($manager);
-        $this->loadDevices($manager);
         $this->loadStandard($manager);
         $this->loadVibes($manager);
+        $this->loadRooms($manager);
+        $this->loadDevices($manager);
         $this->loadDataTypes($manager);
         $this->loadSettingTypes($manager);
         $this->loadSettingData($manager);
-        $this->loadRooms($manager);
         $this->loadEvents($manager);
 
 
@@ -84,6 +84,7 @@ class AppFixtures extends Fixture
                 'is_active' => true,
                 'reference' => 'lamp00123',
                 'brand' => 'Philips',
+                'room' => 1,
             ],
             [
                 'label' => 'Haut-parleur Bluetooth',
@@ -91,6 +92,7 @@ class AppFixtures extends Fixture
                 'is_active' => false,
                 'reference' => 'spk98765',
                 'brand' => 'JBL',
+                'room' => 2,
             ],
             [
                 'label' => 'Lampe de chevet',
@@ -98,6 +100,7 @@ class AppFixtures extends Fixture
                 'is_active' => true,
                 'reference' => 'lamp00456',
                 'brand' => 'IKEA',
+                'room' => 3,
             ],
             [
                 'label' => 'Prise connectée cuisine',
@@ -105,6 +108,7 @@ class AppFixtures extends Fixture
                 'is_active' => false,
                 'reference' => 'plug11223',
                 'brand' => 'TP-Link',
+                'room' => 1,
             ],
             [
                 'label' => 'Haut-parleur salon',
@@ -112,6 +116,7 @@ class AppFixtures extends Fixture
                 'is_active' => true,
                 'reference' => 'spk22334',
                 'brand' => 'Sony',
+                'room' => 2,
             ],
             [
                 'label' => 'Prise connectée chambre',
@@ -119,6 +124,7 @@ class AppFixtures extends Fixture
                 'is_active' => true,
                 'reference' => 'plug33445',
                 'brand' => 'Meross',
+                'room' => 3,
             ],
         ];
 
@@ -129,6 +135,7 @@ class AppFixtures extends Fixture
             $device->setIsActive($value['is_active']);
             $device->setReference($value['reference']);
             $device->setBrand($value['brand']);
+            $device->setRoom($this->getReference('room_' . $value['room'], Room::class));
             // on persiste les données
             $manager->persist($device);
             // on définit une référence pour chaque équipement
@@ -235,26 +242,31 @@ class AppFixtures extends Fixture
                 'vibe' => 1,
                 'settingType' => 1,
                 'data' => 25,
+                'device' => 1,
             ],
             [
                 'vibe' => 2,
                 'settingType' => 2,
                 'data' => 50,
+                'device' => 2,
             ],
             [
                 'vibe' => 3,
                 'settingType' => 3,
                 'data' => '#FF0000',
+                'device' => 3,
             ],
             [
                 'vibe' => 1,
                 'settingType' => 4,
                 'data' => 75,
+                'device' => 4,
             ],
             [
                 'vibe' => 2,
                 'settingType' => 5,
                 'data' => 80,
+                'device' => 5,
             ],
         ];
 
@@ -263,6 +275,7 @@ class AppFixtures extends Fixture
             $settingData->setVibe($this->getReference('vibe_' . $value['vibe'], Vibe::class));
             $settingData->setSettingType($this->getReference('settingType_' . $value['settingType'], SettingType::class));
             $settingData->setData($value['data']);
+            $settingData->setDevice($this->getReference('device_' . $value['device'], Device::class));
             // on persiste les données
             $manager->persist($settingData);
             // on définit une référence pour chaque type de données
@@ -361,14 +374,17 @@ class AppFixtures extends Fixture
             [
                 'label' => 'Salon',
                 'image' => 1,
+                'vibes' => [1, 2], 
             ],
             [
                 'label' => 'Chambre',
                 'image' => 2,
+                'vibes' => [2, 3],
             ],
             [
                 'label' => 'Cuisine',
                 'image' => 3,
+                'vibes' => [3, 1],
             ]
             ];
 
@@ -376,6 +392,10 @@ class AppFixtures extends Fixture
             $room = new Room();
             $room->setLabel($value['label']);
             $room->setImage($this->getReference('image_' . $value['image'], Image::class));
+            // on va boucler sur $value['vibes'] pour la relation ManyToMany avec Vibe
+            foreach ($value['vibes'] as $vibe) {
+                $room->addVibe($this->getReference('vibe_' . $vibe, Vibe::class));
+            }
             // on persiste les données
             $manager->persist($room);
             // on définit une référence pour chaque type de données
