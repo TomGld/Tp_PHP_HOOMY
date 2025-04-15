@@ -82,6 +82,12 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToUrl('Voir les icônes', 'fa fa-eye', $this->generateCrudUrl('icones', Crud::PAGE_INDEX)),
         ]);
 
+        // Sous-menu pour rooms
+        yield MenuItem::subMenu('Pièce', 'fa fa-door-open')->setSubItems([
+            MenuItem::linkToUrl('Ajouter une pièce', 'fa fa-plus-circle', $this->generateCrudUrl('rooms', Crud::PAGE_NEW)),
+            MenuItem::linkToUrl('Voir les pièces', 'fa fa-eye', $this->generateCrudUrl('rooms', Crud::PAGE_INDEX)),
+        ]);
+
         // 2eme section "types de données"
         yield MenuItem::section('Devices et paramètres');
         // Sous-menu pour les devices
