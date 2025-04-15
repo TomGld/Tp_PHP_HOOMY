@@ -79,6 +79,7 @@ class Vibe
      * @var Collection<int, Room>
      */
     #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'vibe')]
+    #[Groups(['vibe:read'])]
     private Collection $rooms;
 
     public function __construct()

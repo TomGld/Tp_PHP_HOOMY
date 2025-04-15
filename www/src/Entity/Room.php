@@ -59,13 +59,14 @@ class Room
      * @var Collection<int, Device>
      */
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'room')]
+    #[Groups(['room:read', 'device:read'])]
     private Collection $devices;
 
     /**
      * @var Collection<int, Vibe>
      */
     #[ORM\ManyToMany(targetEntity: Vibe::class, inversedBy: 'rooms')]
-    #[Groups(['room:read', 'vibe:read'])]
+    #[Groups(['room:read'])]
     private Collection $vibe;
 
     public function __construct()
