@@ -11,7 +11,6 @@ use App\Repository\ImageRepository;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -38,10 +37,6 @@ class Image
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['vibe:read'])]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255)]
     #[Groups(['vibe:read', 'image:read'])]
     private ?int $id = null;
