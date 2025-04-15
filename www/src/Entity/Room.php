@@ -66,7 +66,7 @@ class Room
      * @var Collection<int, Vibe>
      */
     #[ORM\ManyToMany(targetEntity: Vibe::class, inversedBy: 'rooms')]
-    #[Groups(['room:read', 'vibe:read'])]
+    #[Groups(['room:read'])]
     private Collection $vibe;
 
     public function __construct()
