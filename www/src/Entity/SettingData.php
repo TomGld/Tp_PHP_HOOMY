@@ -26,6 +26,9 @@ class SettingData
     #[ORM\JoinColumn(nullable: false)]
     private ?Vibe $vibe = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Device $device = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +66,18 @@ class SettingData
     public function setVibe(?Vibe $vibe): static
     {
         $this->vibe = $vibe;
+
+        return $this;
+    }
+
+    public function getDevice(): ?Device
+    {
+        return $this->device;
+    }
+
+    public function setDevice(?Device $device): static
+    {
+        $this->device = $device;
 
         return $this;
     }
