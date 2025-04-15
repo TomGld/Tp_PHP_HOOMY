@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SettingDataRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SettingDataRepository::class)]
 #[ApiResource]
@@ -17,9 +18,11 @@ class SettingData
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vibe:read'])]
     private ?SettingType $settingType = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['vibe:read'])]
     private ?string $data = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]

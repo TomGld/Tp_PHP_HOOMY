@@ -7,6 +7,7 @@ use App\Repository\SettingTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SettingTypeRepository::class)]
 #[ApiResource]
@@ -19,9 +20,11 @@ class SettingType
 
     #[ORM\ManyToOne(inversedBy: 'settingTypes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vibe:read'])]
     private ?DataType $dataType = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['vibe:read'])]
     private ?string $labelKey = null;
 
     /**
