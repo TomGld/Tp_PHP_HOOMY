@@ -80,6 +80,9 @@ class ImageCrudController extends AbstractCrudController
         if ($category === 'icones') {
             $this->basePath = 'images/icones';
             $this->uploadDir = 'public/images/icones/';
+        } elseif ($category === 'rooms') {
+            $this->basePath = 'images/rooms';
+            $this->uploadDir = 'public/images/rooms/';
         } else {
             $this->basePath = 'images/avatars';
             $this->uploadDir = 'public/images/avatars/';
