@@ -27,7 +27,7 @@ CREATE TABLE `data_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `data_type` varchar(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,11 +37,11 @@ CREATE TABLE `data_type` (
 LOCK TABLES `data_type` WRITE;
 /*!40000 ALTER TABLE `data_type` DISABLE KEYS */;
 INSERT INTO `data_type` VALUES
-(11,'°C'),
-(12,'W'),
-(13,'RGB'),
-(14,'%'),
-(15,'dB');
+(1,'°C'),
+(2,'W'),
+(3,'RGB'),
+(4,'%'),
+(5,'dB');
 /*!40000 ALTER TABLE `data_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,16 +54,16 @@ DROP TABLE IF EXISTS `device`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `device` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_id` int(11) DEFAULT NULL,
   `label` varchar(50) NOT NULL,
   `type` varchar(50) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `reference` varchar(50) NOT NULL,
   `brand` varchar(50) NOT NULL,
-  `room_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_92FB68E54177093` (`room_id`),
   CONSTRAINT `FK_92FB68E54177093` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,12 +73,12 @@ CREATE TABLE `device` (
 LOCK TABLES `device` WRITE;
 /*!40000 ALTER TABLE `device` DISABLE KEYS */;
 INSERT INTO `device` VALUES
-(13,'Lampe de salon','Lampe',1,'lamp00123','Philips',NULL),
-(14,'Haut-parleur Bluetooth','Haut-parleur',0,'spk98765','JBL',NULL),
-(15,'Lampe de chevet','Lampe',1,'lamp00456','IKEA',NULL),
-(16,'Prise connectée cuisine','Prise connectée',0,'plug11223','TP-Link',NULL),
-(17,'Haut-parleur salon','Haut-parleur',1,'spk22334','Sony',NULL),
-(18,'Prise connectée chambre','Prise connectée',1,'plug33445','Meross',NULL);
+(1,1,'Lampe de salon','Lampe',1,'lamp00123','Philips'),
+(2,2,'Haut-parleur Bluetooth','Haut-parleur',0,'spk98765','JBL'),
+(3,3,'Lampe de chevet','Lampe',1,'lamp00456','IKEA'),
+(4,1,'Prise connectée cuisine','Prise connectée',0,'plug11223','TP-Link'),
+(5,2,'Haut-parleur salon','Haut-parleur',1,'spk22334','Sony'),
+(6,3,'Prise connectée chambre','Prise connectée',1,'plug33445','Meross');
 /*!40000 ALTER TABLE `device` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,10 +104,7 @@ CREATE TABLE `doctrine_migration_versions` (
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
 INSERT INTO `doctrine_migration_versions` VALUES
-('DoctrineMigrations\\Version20250401143004','2025-04-07 09:28:53',7),
-('DoctrineMigrations\\Version20250403115245','2025-04-07 09:28:53',3),
-('DoctrineMigrations\\Version20250404092532','2025-04-07 09:28:53',148),
-('DoctrineMigrations\\Version20250408072351','2025-04-08 07:24:03',20);
+('DoctrineMigrations\\Version20250415124144','2025-04-15 13:03:56',121);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,8 +134,8 @@ CREATE TABLE `event` (
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
 INSERT INTO `event` VALUES
-(1,7,'repas','2025-10-01 10:00:00','2025-10-01 12:00:00'),
-(2,8,'anniversaire','2025-10-02 14:00:00','2025-10-02 16:00:00');
+(1,1,'repas','2025-10-01 10:00:00','2025-10-01 12:00:00'),
+(2,2,'anniversaire','2025-10-02 14:00:00','2025-10-02 16:00:00');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,10 +164,10 @@ CREATE TABLE `event_room` (
 LOCK TABLES `event_room` WRITE;
 /*!40000 ALTER TABLE `event_room` DISABLE KEYS */;
 INSERT INTO `event_room` VALUES
-(1,7),
-(1,9),
-(2,7),
-(2,8);
+(1,1),
+(1,3),
+(2,1),
+(2,2);
 /*!40000 ALTER TABLE `event_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +183,7 @@ CREATE TABLE `image` (
   `image_path` varchar(255) NOT NULL,
   `category` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,19 +193,28 @@ CREATE TABLE `image` (
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
 INSERT INTO `image` VALUES
+(1,'Fiesta.png',2),
+(2,'Lamp.png',2),
+(3,'Duo.png',2),
+(4,'Chambre.jpg',3),
+(5,'Cuisine.jpg',3),
+(6,'Salon.jpg',3),
 (7,'avatar1.jpg',1),
 (8,'avatar2.jpg',1),
 (9,'avatar3.jpg',1),
-(14,'Fiesta.png',2),
-(16,'upload_719_cool-profile-picture-87h46gcobjl5e4xu-878814168.jpg',1),
-(17,'61140-3840x2160-spiderman-logo-wallpaper-desktop-4k.jpg',1),
-(18,'Chambre.jpg',3),
-(19,'Cuisine.jpg',3),
-(20,'Salon.jpg',3),
-(21,'Lamp.png',2),
-(22,'Sofa.png',2),
-(23,'Couple.png',2),
-(24,'Duo.png',2);
+(10,'avatar4.jpg',1),
+(11,'avatar5.jpg',1),
+(12,'avatar6.jpg',1),
+(13,'avatar7.jpg',1),
+(14,'avatar8.jpg',1),
+(15,'avatar9.jpg',1),
+(16,'avatar10.jpg',1),
+(17,'avatar11.jpg',1),
+(18,'avatar12.jpg',1),
+(19,'avatar13.jpg',1),
+(20,'avatar14.jpg',1),
+(21,'avatar15.png',1),
+(22,'61140-3840x2160-spiderman-logo-wallpaper-desktop-4k.jpg',1);
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +233,7 @@ CREATE TABLE `profile` (
   PRIMARY KEY (`id`),
   KEY `IDX_8157AA0F3DA5256D` (`image_id`),
   CONSTRAINT `FK_8157AA0F3DA5256D` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,10 +243,10 @@ CREATE TABLE `profile` (
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
 INSERT INTO `profile` VALUES
-(9,17,'Tom',1234),
-(10,8,'Mayer',1234),
-(11,8,'user3',1234),
-(12,9,'user4',1234);
+(1,22,'Tom',1234),
+(2,21,'Mayer',1234),
+(3,7,'user3',1234),
+(4,8,'user4',1234);
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +264,7 @@ CREATE TABLE `room` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_729F519B3DA5256D` (`image_id`),
   CONSTRAINT `FK_729F519B3DA5256D` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,10 +274,44 @@ CREATE TABLE `room` (
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
 INSERT INTO `room` VALUES
-(7,20,'Salon'),
-(8,18,'Chambre'),
-(9,19,'Cuisine');
+(1,6,'Salon'),
+(2,4,'Chambre'),
+(3,5,'Cuisine');
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `room_vibe`
+--
+
+DROP TABLE IF EXISTS `room_vibe`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `room_vibe` (
+  `room_id` int(11) NOT NULL,
+  `vibe_id` int(11) NOT NULL,
+  PRIMARY KEY (`room_id`,`vibe_id`),
+  KEY `IDX_2101A66554177093` (`room_id`),
+  KEY `IDX_2101A6654B255BC3` (`vibe_id`),
+  CONSTRAINT `FK_2101A6654B255BC3` FOREIGN KEY (`vibe_id`) REFERENCES `vibe` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_2101A66554177093` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `room_vibe`
+--
+
+LOCK TABLES `room_vibe` WRITE;
+/*!40000 ALTER TABLE `room_vibe` DISABLE KEYS */;
+INSERT INTO `room_vibe` VALUES
+(1,1),
+(1,2),
+(2,2),
+(2,3),
+(3,1),
+(3,3);
+/*!40000 ALTER TABLE `room_vibe` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -285,13 +325,16 @@ CREATE TABLE `setting_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `setting_type_id` int(11) NOT NULL,
   `vibe_id` int(11) NOT NULL,
+  `device_id` int(11) DEFAULT NULL,
   `data` varchar(25) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_6C47DF8594A4C7D4` (`device_id`),
   KEY `IDX_6C47DF859D1E3C7B` (`setting_type_id`),
   KEY `IDX_6C47DF854B255BC3` (`vibe_id`),
   CONSTRAINT `FK_6C47DF854B255BC3` FOREIGN KEY (`vibe_id`) REFERENCES `vibe` (`id`),
+  CONSTRAINT `FK_6C47DF8594A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`),
   CONSTRAINT `FK_6C47DF859D1E3C7B` FOREIGN KEY (`setting_type_id`) REFERENCES `setting_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,11 +344,11 @@ CREATE TABLE `setting_data` (
 LOCK TABLES `setting_data` WRITE;
 /*!40000 ALTER TABLE `setting_data` DISABLE KEYS */;
 INSERT INTO `setting_data` VALUES
-(11,11,7,'25'),
-(12,12,8,'50'),
-(13,13,9,'#FF0000'),
-(14,14,7,'75'),
-(15,15,8,'80');
+(1,1,1,1,'25'),
+(2,2,2,2,'50'),
+(3,3,3,3,'#FF0000'),
+(4,4,1,4,'75'),
+(5,5,2,5,'80');
 /*!40000 ALTER TABLE `setting_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +366,7 @@ CREATE TABLE `setting_type` (
   PRIMARY KEY (`id`),
   KEY `IDX_4D6A7BCFA147DA62` (`data_type_id`),
   CONSTRAINT `FK_4D6A7BCFA147DA62` FOREIGN KEY (`data_type_id`) REFERENCES `data_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -333,11 +376,11 @@ CREATE TABLE `setting_type` (
 LOCK TABLES `setting_type` WRITE;
 /*!40000 ALTER TABLE `setting_type` DISABLE KEYS */;
 INSERT INTO `setting_type` VALUES
-(11,11,'température'),
-(12,12,'puissance'),
-(13,13,'couleur'),
-(14,14,'luminosité'),
-(15,15,'volume');
+(1,1,'température'),
+(2,2,'puissance'),
+(3,3,'couleur'),
+(4,4,'luminosité'),
+(5,5,'volume');
 /*!40000 ALTER TABLE `setting_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,16 +409,16 @@ CREATE TABLE `setting_type_device` (
 LOCK TABLES `setting_type_device` WRITE;
 /*!40000 ALTER TABLE `setting_type_device` DISABLE KEYS */;
 INSERT INTO `setting_type_device` VALUES
-(11,13),
-(11,16),
-(12,14),
-(12,16),
-(13,13),
-(13,15),
-(14,13),
-(14,15),
-(15,14),
-(15,17);
+(1,1),
+(1,4),
+(2,2),
+(2,4),
+(3,1),
+(3,3),
+(4,1),
+(4,3),
+(5,2),
+(5,5);
 /*!40000 ALTER TABLE `setting_type_device` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -393,7 +436,7 @@ CREATE TABLE `standard` (
   `emotion` int(11) NOT NULL,
   `consciousness` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -403,10 +446,10 @@ CREATE TABLE `standard` (
 LOCK TABLES `standard` WRITE;
 /*!40000 ALTER TABLE `standard` DISABLE KEYS */;
 INSERT INTO `standard` VALUES
-(9,50,75,100,100),
-(10,25,50,75,75),
-(11,0,25,50,50),
-(12,100,0,100,25);
+(1,50,75,100,100),
+(2,25,50,75,75),
+(3,0,25,50,50),
+(4,100,0,100,25);
 /*!40000 ALTER TABLE `standard` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -424,7 +467,7 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_IDENTIFIER_NAME` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -434,7 +477,7 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(3,'admin','[\"ROLE_ADMIN\"]','$2y$13$LcwDjeg9GoNfU08chdmJ5.Wf60bGAr7RDHK/0V3S7VOZ//B2uWnmC');
+(1,'admin','[\"ROLE_ADMIN\"]','$2y$13$v2moE9dBq7Vy4W7GUqxs8.5ERZMECTKnYqhwZeKpGrimKL2sFTzBW');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,7 +501,7 @@ CREATE TABLE `vibe` (
   CONSTRAINT `FK_42054C013DA5256D` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`),
   CONSTRAINT `FK_42054C016F9BFC42` FOREIGN KEY (`standard_id`) REFERENCES `standard` (`id`),
   CONSTRAINT `FK_42054C01CCFA12B8` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -468,9 +511,9 @@ CREATE TABLE `vibe` (
 LOCK TABLES `vibe` WRITE;
 /*!40000 ALTER TABLE `vibe` DISABLE KEYS */;
 INSERT INTO `vibe` VALUES
-(7,9,14,9,'Chill'),
-(8,9,21,10,'Cozy'),
-(9,9,24,11,'Sad');
+(1,1,1,1,'Chill'),
+(2,1,2,2,'Cozy'),
+(3,1,3,3,'Sad');
 /*!40000 ALTER TABLE `vibe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -483,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-04-15  9:36:35
+-- Dump completed on 2025-04-16  7:58:52

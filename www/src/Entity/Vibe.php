@@ -60,7 +60,7 @@ class Vibe
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['vibe:read', 'room:read'])]
+    #[Groups(['vibe:read', 'vibe:write', 'room:read'])]
     private ?string $label = null;
 
     /**
