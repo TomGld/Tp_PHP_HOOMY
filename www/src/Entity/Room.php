@@ -59,7 +59,7 @@ class Room
      * @var Collection<int, Device>
      */
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'room')]
-    #[Groups(['room:read', 'device:read'])]
+    #[Groups(['room:read'])]
     private Collection $devices;
 
     /**

@@ -350,6 +350,26 @@ class AppFixtures extends Fixture
                 'image_path' => 'avatar3.jpg',
                 'category' => 1,
             ],
+            [
+                'image_path' => 'Chambre 2.jpg',
+                'category' => 2,
+            ],
+            [
+                'image_path' => 'Chambre .jpg',
+                'category' => 2,
+            ],
+            [
+                'image_path' => 'Cuisine.jpg',
+                'category' => 2,
+            ],
+            [
+                'image_path' => 'Salon.jpg',
+                'category' => 2,
+            ],
+            [
+                'image_path' => 'BedX2.jpg',
+                'category' => 3,
+            ]
         ];
 
         foreach ($array_images as $key => $value) {
@@ -373,17 +393,17 @@ class AppFixtures extends Fixture
         $array_rooms = [
             [
                 'label' => 'Salon',
-                'image' => 1,
+                'image' => 5,
                 'vibes' => [1, 2], 
             ],
             [
                 'label' => 'Chambre',
-                'image' => 2,
+                'image' => 4,
                 'vibes' => [2, 3],
             ],
             [
                 'label' => 'Cuisine',
-                'image' => 3,
+                'image' => 6,
                 'vibes' => [3, 1],
             ]
             ];

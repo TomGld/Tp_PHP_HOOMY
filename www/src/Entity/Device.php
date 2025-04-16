@@ -42,30 +42,30 @@ class Device
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write'])]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write'])]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $type = null;
 
     #[ORM\Column]
-    #[Groups(['device:read', 'device:write'])]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?bool $isActive = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write'])]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $reference = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write'])]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $brand = null;
 
     /**
      * @var Collection<int, SettingType>
      */
     #[ORM\ManyToMany(targetEntity: SettingType::class, mappedBy: 'Device')]
-    #[Groups(['device:read'])]
+    #[Groups(['device:read', 'room:read'])]
     private Collection $settingTypes;
 
     #[ORM\ManyToOne(inversedBy: 'devices')]
