@@ -28,6 +28,7 @@ class Vibe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['vibe:read'])]
     private ?int $id = null;
 
     /**
@@ -47,7 +48,7 @@ class Vibe
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'vibe:write'])]
     private ?string $label = null;
 
     /**

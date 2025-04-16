@@ -42,7 +42,7 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['image:read', 'room:read'])]
+    #[Groups(['image:read', 'room:read', 'vibe:read'])]
     private ?string $imagePath = null;
 
     #[ORM\OneToOne(mappedBy: 'image', cascade: ['persist', 'remove'])]
