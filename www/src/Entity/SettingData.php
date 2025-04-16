@@ -2,32 +2,60 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\SettingDataRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use App\Repository\SettingDataRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SettingDataRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    //autorisation des route que l'on veut acceder
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Patch()
+    ],
+    normalizationContext: ['groups' => ['settingData:read']],
+    denormalizationContext: ['groups' => ['settingData:write']]
+)]
+
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'iexact',
+        'id' => 'exact',
+    ]
+)]
 class SettingData
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['settingData:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['settingData:read'])]
     private ?SettingType $settingType = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['settingData:read', 'settingData:write', 'room:read'])]
     private ?string $data = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['settingData:read'])]
     private ?Vibe $vibe = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['settingData:read', 'device:read'])]
+    private ?Device $device = null;
 
     public function getId(): ?int
     {
@@ -66,6 +94,18 @@ class SettingData
     public function setVibe(?Vibe $vibe): static
     {
         $this->vibe = $vibe;
+
+        return $this;
+    }
+
+    public function getDevice(): ?Device
+    {
+        return $this->device;
+    }
+
+    public function setDevice(?Device $device): static
+    {
+        $this->device = $device;
 
         return $this;
     }

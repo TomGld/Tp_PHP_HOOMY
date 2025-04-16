@@ -2,26 +2,36 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\GetCollection;
-use App\Repository\VibeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VibeRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VibeRepository::class)]
 #[ApiResource(
     //autorisation des route que l'on veut acceder
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Patch()
-    ],
-    normalizationContext: ['groups' => ['vibe:read']],
-    denormalizationContext: ['groups' => ['vibe:write']]
+operations: [
+    new Get(),
+    new GetCollection(),
+    new Patch()
+],
+normalizationContext: ['groups' => ['vibe:read']],
+denormalizationContext: ['groups' => ['vibe:write']]
+)]
+
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'iexact',
+        'id' => 'exact',
+    ]
 )]
 class Vibe
 {
@@ -35,20 +45,22 @@ class Vibe
      * @var Collection<int, SettingData>
      */
     #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe')]
+
     #[Groups(['vibe:read'])]
     private Collection $settingData;
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vibe:read', 'vibe:write'])]
     private ?Profile $profile = null;
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'room:read'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['vibe:read', 'vibe:write'])]
+    #[Groups(['vibe:read', 'vibe:write', 'room:read'])]
     private ?string $label = null;
 
     /**
@@ -63,10 +75,18 @@ class Vibe
     #[Groups(['vibe:read'])]
     private ?Standard $standard = null;
 
+    /**
+     * @var Collection<int, Room>
+     */
+    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'vibe')]
+    #[Groups(['vibe:read'])]
+    private Collection $rooms;
+
     public function __construct()
     {
         $this->settingData = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->rooms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,6 +198,33 @@ class Vibe
     public function setStandard(Standard $standard): static
     {
         $this->standard = $standard;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Room>
+     */
+    public function getRooms(): Collection
+    {
+        return $this->rooms;
+    }
+
+    public function addRoom(Room $room): static
+    {
+        if (!$this->rooms->contains($room)) {
+            $this->rooms->add($room);
+            $room->addVibe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoom(Room $room): static
+    {
+        if ($this->rooms->removeElement($room)) {
+            $room->removeVibe($this);
+        }
 
         return $this;
     }
