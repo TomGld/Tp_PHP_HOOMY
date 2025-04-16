@@ -2,25 +2,51 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\RoomRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RoomRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
-#[ApiResource]
+#[ApiResource(
+//autorisation des route que l'on veut acceder
+operations: [
+    new Get(),
+    new GetCollection(),
+    new Patch()
+],
+normalizationContext: ['groups' => ['room:read']],
+denormalizationContext: ['groups' => ['room:write']]
+)]
+
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'iexact',
+        'id' => 'exact',
+    ]
+)]
 class Room
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['room:read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'room', cascade: ['persist', 'remove'])]
+    #[Groups(['room:read', 'room:write'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
+    #[Groups(['room:read', 'room:write'])]
     private ?string $label = null;
 
     /**
@@ -33,12 +59,21 @@ class Room
      * @var Collection<int, Device>
      */
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'room')]
+    #[Groups(['room:read'])]
     private Collection $devices;
+
+    /**
+     * @var Collection<int, Vibe>
+     */
+    #[ORM\ManyToMany(targetEntity: Vibe::class, inversedBy: 'rooms')]
+    #[Groups(['room:read'])]
+    private Collection $vibe;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->devices = new ArrayCollection();
+        $this->vibe = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,5 +165,29 @@ class Room
     public function __toString(): string
     {
         return $this->label;
+    }
+
+    /**
+     * @return Collection<int, Vibe>
+     */
+    public function getVibe(): Collection
+    {
+        return $this->vibe;
+    }
+
+    public function addVibe(Vibe $vibe): static
+    {
+        if (!$this->vibe->contains($vibe)) {
+            $this->vibe->add($vibe);
+        }
+
+        return $this;
+    }
+
+    public function removeVibe(Vibe $vibe): static
+    {
+        $this->vibe->removeElement($vibe);
+
+        return $this;
     }
 }

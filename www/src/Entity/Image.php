@@ -2,28 +2,54 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ImageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ImageRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    //autorisation des route que l'on veut acceder
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Patch()
+    ],
+    normalizationContext: ['groups' => ['image:read']],
+    denormalizationContext: ['groups' => ['image:write']]
+)]
+
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'iexact',
+        'id' => 'exact',
+    ]
+)]
 class Image
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(length: 255)]
+    #[Groups(['vibe:read', 'image:read',])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['image:read', 'room:read', 'vibe:read'])]
     private ?string $imagePath = null;
 
     #[ORM\OneToOne(mappedBy: 'image', cascade: ['persist', 'remove'])]
     private ?Room $room = null;
 
     #[ORM\Column]
+    #[Groups(['image:read', 'image:write'])]
     private ?int $category = null;
 
     /**

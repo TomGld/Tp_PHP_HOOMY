@@ -2,43 +2,74 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\DeviceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DeviceRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DeviceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    //autorisation des route que l'on veut acceder
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Patch()
+    ],
+    normalizationContext: ['groups' => ['device:read']],
+    denormalizationContext: ['groups' => ['device:write']]
+)]
+
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'name' => 'iexact',
+        'id' => 'exact',
+    ]
+)]
 class Device
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['device:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $type = null;
 
     #[ORM\Column]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?bool $isActive = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $reference = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['device:read', 'device:write', 'room:read'])]
     private ?string $brand = null;
 
     /**
      * @var Collection<int, SettingType>
      */
     #[ORM\ManyToMany(targetEntity: SettingType::class, mappedBy: 'Device')]
+    #[Groups(['device:read', 'room:read'])]
     private Collection $settingTypes;
 
     #[ORM\ManyToOne(inversedBy: 'devices')]
+    #[Groups(['device:read'])]
     private ?Room $room = null;
 
     public function __construct()
