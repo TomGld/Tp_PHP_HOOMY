@@ -56,11 +56,11 @@ class Vibe
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'room:read'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'room:read'])]
     private ?string $label = null;
 
     /**

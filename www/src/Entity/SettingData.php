@@ -45,7 +45,7 @@ class SettingData
     private ?SettingType $settingType = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['settingData:read', 'settingData:write'])]
+    #[Groups(['settingData:read', 'settingData:write', 'room:read'])]
     private ?string $data = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
