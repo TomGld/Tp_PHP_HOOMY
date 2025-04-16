@@ -45,7 +45,6 @@ class Vibe
      * @var Collection<int, SettingData>
      */
     #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe')]
-
     #[Groups(['vibe:read'])]
     private Collection $settingData;
 

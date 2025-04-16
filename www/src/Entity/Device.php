@@ -42,23 +42,23 @@ class Device
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $type = null;
 
     #[ORM\Column]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?bool $isActive = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $reference = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $brand = null;
 
     /**

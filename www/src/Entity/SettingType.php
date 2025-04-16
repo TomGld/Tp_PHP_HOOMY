@@ -20,7 +20,7 @@ class SettingType
 
     #[ORM\ManyToOne(inversedBy: 'settingTypes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read', 'room:read'])]
+    #[Groups(['room:read', 'vibe:read'])]
     private ?DataType $dataType = null;
 
     #[ORM\Column(length: 25)]
@@ -31,7 +31,7 @@ class SettingType
      * @var Collection<int, SettingData>
      */
     #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'settingType')]
-    #[Groups(['vibe:read', 'room:read'])]
+    #[Groups(['room:read'])]
     private Collection $settingData;
 
     /**

@@ -36,16 +36,16 @@ class SettingData
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['settingData:read'])]
+    #[Groups(['settingData:read', 'vibe:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['settingData:read'])]
+    #[Groups(['settingData:read', 'vibe:read'])]
     private ?SettingType $settingType = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['settingData:read', 'settingData:write', 'room:read'])]
+    #[Groups(['settingData:read', 'settingData:write', 'room:read', 'vibe:read'])]
     private ?string $data = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
@@ -54,7 +54,7 @@ class SettingData
     private ?Vibe $vibe = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['settingData:read', 'device:read'])]
+    #[Groups(['settingData:read', 'device:read', 'vibe:read'])]
     private ?Device $device = null;
 
     public function getId(): ?int
