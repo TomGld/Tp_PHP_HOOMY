@@ -38,7 +38,7 @@ class Room
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['room:read'])]
+    #[Groups(['room:read', 'device:read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'room', cascade: ['persist', 'remove'])]
@@ -46,7 +46,7 @@ class Room
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['room:read', 'room:write'])]
+    #[Groups(['room:read', 'room:write', 'device:read'])]
     private ?string $label = null;
 
     /**
@@ -59,7 +59,7 @@ class Room
      * @var Collection<int, Device>
      */
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'room')]
-    #[Groups(['room:read'])]
+    #[Groups(['room:read', 'room:write'])]
     private Collection $devices;
 
     /**

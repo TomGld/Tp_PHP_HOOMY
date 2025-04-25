@@ -69,7 +69,7 @@ class Device
     private Collection $settingTypes;
 
     #[ORM\ManyToOne(inversedBy: 'devices')]
-    #[Groups(['device:read'])]
+    #[Groups(['device:read', 'device:write'])]
     private ?Room $room = null;
 
     public function __construct()
