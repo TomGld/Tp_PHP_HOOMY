@@ -62,18 +62,10 @@ class Room
     #[Groups(['room:read'])]
     private Collection $devices;
 
-    /**
-     * @var Collection<int, Vibe>
-     */
-    #[ORM\ManyToMany(targetEntity: Vibe::class, inversedBy: 'rooms')]
-    #[Groups(['room:read'])]
-    private Collection $vibe;
-
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->devices = new ArrayCollection();
-        $this->vibe = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,29 +157,5 @@ class Room
     public function __toString(): string
     {
         return $this->label;
-    }
-
-    /**
-     * @return Collection<int, Vibe>
-     */
-    public function getVibe(): Collection
-    {
-        return $this->vibe;
-    }
-
-    public function addVibe(Vibe $vibe): static
-    {
-        if (!$this->vibe->contains($vibe)) {
-            $this->vibe->add($vibe);
-        }
-
-        return $this;
-    }
-
-    public function removeVibe(Vibe $vibe): static
-    {
-        $this->vibe->removeElement($vibe);
-
-        return $this;
     }
 }
