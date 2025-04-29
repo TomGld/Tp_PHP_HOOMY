@@ -9,7 +9,9 @@ use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DeviceRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,6 +21,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     //autorisation des route que l'on veut acceder
     operations: [
         new Get(),
+        new Post(),
+        new Delete(),
         new GetCollection(),
         new Patch()
     ],
@@ -69,7 +73,7 @@ class Device
     private Collection $settingTypes;
 
     #[ORM\ManyToOne(inversedBy: 'devices')]
-    #[Groups(['device:read', 'vibe:read'])]
+    #[Groups(['device:read','device:write', 'vibe:read'])]
     private ?Room $room = null;
 
     #[ORM\OneToMany(mappedBy: 'device', targetEntity: SettingData::class, cascade: ['persist', 'remove'])]
