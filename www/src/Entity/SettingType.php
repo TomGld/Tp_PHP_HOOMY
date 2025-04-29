@@ -16,6 +16,7 @@ class SettingType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['vibe:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingTypes')]

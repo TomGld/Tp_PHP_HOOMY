@@ -10,6 +10,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use App\Repository\SettingDataRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SettingDataRepository::class)]
@@ -53,8 +55,9 @@ class SettingData
     #[Groups(['settingData:read'])]
     private ?Vibe $vibe = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['settingData:read', 'device:read', 'vibe:read'])]
+    #[ORM\ManyToOne(inversedBy: 'settingData')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['settingData:read', 'settingData:write', 'vibe:read'])]
     private ?Device $device = null;
 
     public function getId(): ?int
