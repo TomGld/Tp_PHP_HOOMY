@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250415124144 extends AbstractMigration
+final class Version20250429074726 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -40,9 +40,6 @@ final class Version20250415124144 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE room (id INT AUTO_INCREMENT NOT NULL, image_id INT DEFAULT NULL, label VARCHAR(25) NOT NULL, UNIQUE INDEX UNIQ_729F519B3DA5256D (image_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE TABLE room_vibe (room_id INT NOT NULL, vibe_id INT NOT NULL, INDEX IDX_2101A66554177093 (room_id), INDEX IDX_2101A6654B255BC3 (vibe_id), PRIMARY KEY(room_id, vibe_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE setting_data (id INT AUTO_INCREMENT NOT NULL, setting_type_id INT NOT NULL, vibe_id INT NOT NULL, device_id INT DEFAULT NULL, data VARCHAR(25) NOT NULL, INDEX IDX_6C47DF859D1E3C7B (setting_type_id), INDEX IDX_6C47DF854B255BC3 (vibe_id), UNIQUE INDEX UNIQ_6C47DF8594A4C7D4 (device_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
@@ -79,12 +76,6 @@ final class Version20250415124144 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE room ADD CONSTRAINT FK_729F519B3DA5256D FOREIGN KEY (image_id) REFERENCES image (id)
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE room_vibe ADD CONSTRAINT FK_2101A66554177093 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE room_vibe ADD CONSTRAINT FK_2101A6654B255BC3 FOREIGN KEY (vibe_id) REFERENCES vibe (id) ON DELETE CASCADE
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE setting_data ADD CONSTRAINT FK_6C47DF859D1E3C7B FOREIGN KEY (setting_type_id) REFERENCES setting_type (id)
@@ -137,12 +128,6 @@ final class Version20250415124144 extends AbstractMigration
             ALTER TABLE room DROP FOREIGN KEY FK_729F519B3DA5256D
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE room_vibe DROP FOREIGN KEY FK_2101A66554177093
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE room_vibe DROP FOREIGN KEY FK_2101A6654B255BC3
-        SQL);
-        $this->addSql(<<<'SQL'
             ALTER TABLE setting_data DROP FOREIGN KEY FK_6C47DF859D1E3C7B
         SQL);
         $this->addSql(<<<'SQL'
@@ -189,9 +174,6 @@ final class Version20250415124144 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE room
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE room_vibe
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE setting_data
