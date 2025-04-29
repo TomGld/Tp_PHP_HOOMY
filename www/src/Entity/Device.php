@@ -38,7 +38,7 @@ class Device
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['device:read'])]
+    #[Groups(['device:read', 'vibe:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
@@ -69,12 +69,17 @@ class Device
     private Collection $settingTypes;
 
     #[ORM\ManyToOne(inversedBy: 'devices')]
-    #[Groups(['device:read'])]
+    #[Groups(['device:read', 'vibe:read'])]
     private ?Room $room = null;
+
+    #[ORM\OneToMany(mappedBy: 'device', targetEntity: SettingData::class, cascade: ['persist', 'remove'])]
+    #[Groups(['device:read', 'device:write'])]
+    private Collection $settingData;
 
     public function __construct()
     {
         $this->settingTypes = new ArrayCollection();
+        $this->settingData = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,6 +182,36 @@ class Device
     public function setRoom(?Room $room): static
     {
         $this->room = $room;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SettingData>
+     */
+    public function getSettingData(): Collection
+    {
+        return $this->settingData;
+    }
+
+    public function addSettingData(SettingData $settingData): static
+    {
+        if (!$this->settingData->contains($settingData)) {
+            $this->settingData->add($settingData);
+            $settingData->setDevice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSettingData(SettingData $settingData): static
+    {
+        if ($this->settingData->removeElement($settingData)) {
+            // Set the owning side to null (unless already changed)
+            if ($settingData->getDevice() === $this) {
+                $settingData->setDevice(null);
+            }
+        }
 
         return $this;
     }

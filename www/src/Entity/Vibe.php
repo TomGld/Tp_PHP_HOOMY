@@ -44,8 +44,8 @@ class Vibe
     /**
      * @var Collection<int, SettingData>
      */
-    #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe')]
-    #[Groups(['vibe:read'])]
+    #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe', cascade: ['persist'])]
+    #[Groups(['vibe:read', 'vibe:write'])]
     private Collection $settingData;
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
@@ -55,7 +55,7 @@ class Vibe
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read', 'room:read'])]
+    #[Groups(['vibe:read', 'room:read', 'vibe:write'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
@@ -71,7 +71,7 @@ class Vibe
 
     #[ORM\OneToOne(inversedBy: 'vibe', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'vibe:write'])]
     private ?Standard $standard = null;
 
     public function __construct()

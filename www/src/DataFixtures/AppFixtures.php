@@ -268,6 +268,12 @@ class AppFixtures extends Fixture
                 'data' => 80,
                 'device' => 5,
             ],
+            [
+                'vibe' => 1,
+                'settingType' => 3,
+                'data' => '#FF0001',
+                'device' => 1,
+            ],
         ];
 
         foreach ($array_settingData as $key => $value) {
