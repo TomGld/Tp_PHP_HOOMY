@@ -44,9 +44,8 @@ class Vibe
     /**
      * @var Collection<int, SettingData>
      */
-    #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe')]
-
-    #[Groups(['vibe:read'])]
+    #[ORM\OneToMany(targetEntity: SettingData::class, mappedBy: 'vibe', cascade: ['persist'])]
+    #[Groups(['vibe:read', 'vibe:write'])]
     private Collection $settingData;
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
@@ -56,7 +55,7 @@ class Vibe
 
     #[ORM\ManyToOne(inversedBy: 'vibes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read', 'room:read'])]
+    #[Groups(['vibe:read', 'room:read', 'vibe:write'])]
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
@@ -72,21 +71,13 @@ class Vibe
 
     #[ORM\OneToOne(inversedBy: 'vibe', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'vibe:write'])]
     private ?Standard $standard = null;
-
-    /**
-     * @var Collection<int, Room>
-     */
-    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'vibe')]
-    #[Groups(['vibe:read'])]
-    private Collection $rooms;
 
     public function __construct()
     {
         $this->settingData = new ArrayCollection();
         $this->events = new ArrayCollection();
-        $this->rooms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,30 +193,4 @@ class Vibe
         return $this;
     }
 
-    /**
-     * @return Collection<int, Room>
-     */
-    public function getRooms(): Collection
-    {
-        return $this->rooms;
-    }
-
-    public function addRoom(Room $room): static
-    {
-        if (!$this->rooms->contains($room)) {
-            $this->rooms->add($room);
-            $room->addVibe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRoom(Room $room): static
-    {
-        if ($this->rooms->removeElement($room)) {
-            $room->removeVibe($this);
-        }
-
-        return $this;
-    }
 }

@@ -9,7 +9,9 @@ use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\DeviceRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,6 +21,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     //autorisation des route que l'on veut acceder
     operations: [
         new Get(),
+        new Post(),
+        new Delete(),
         new GetCollection(),
         new Patch()
     ],
@@ -38,27 +42,27 @@ class Device
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['device:read'])]
+    #[Groups(['device:read', 'vibe:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $type = null;
 
     #[ORM\Column]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?bool $isActive = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $reference = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['device:read', 'device:write', 'room:read'])]
+    #[Groups(['device:read', 'device:write', 'room:read', 'vibe:read'])]
     private ?string $brand = null;
 
     /**
@@ -69,12 +73,17 @@ class Device
     private Collection $settingTypes;
 
     #[ORM\ManyToOne(inversedBy: 'devices')]
-    #[Groups(['device:read', 'device:write'])]
+    #[Groups(['device:read','device:write', 'vibe:read'])]
     private ?Room $room = null;
+
+    #[ORM\OneToMany(mappedBy: 'device', targetEntity: SettingData::class, cascade: ['persist', 'remove'])]
+    #[Groups(['device:read', 'device:write'])]
+    private Collection $settingData;
 
     public function __construct()
     {
         $this->settingTypes = new ArrayCollection();
+        $this->settingData = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,6 +186,36 @@ class Device
     public function setRoom(?Room $room): static
     {
         $this->room = $room;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SettingData>
+     */
+    public function getSettingData(): Collection
+    {
+        return $this->settingData;
+    }
+
+    public function addSettingData(SettingData $settingData): static
+    {
+        if (!$this->settingData->contains($settingData)) {
+            $this->settingData->add($settingData);
+            $settingData->setDevice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSettingData(SettingData $settingData): static
+    {
+        if ($this->settingData->removeElement($settingData)) {
+            // Set the owning side to null (unless already changed)
+            if ($settingData->getDevice() === $this) {
+                $settingData->setDevice(null);
+            }
+        }
 
         return $this;
     }

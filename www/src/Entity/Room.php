@@ -38,7 +38,7 @@ class Room
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['room:read', 'device:read'])]
+    #[Groups(['room:read', 'vibe:read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'room', cascade: ['persist', 'remove'])]
@@ -46,7 +46,7 @@ class Room
     private ?Image $image = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['room:read', 'room:write', 'device:read'])]
+    #[Groups(['room:read', 'room:write', 'vibe:read'])]
     private ?string $label = null;
 
     /**
@@ -62,18 +62,10 @@ class Room
     #[Groups(['room:read', 'room:write'])]
     private Collection $devices;
 
-    /**
-     * @var Collection<int, Vibe>
-     */
-    #[ORM\ManyToMany(targetEntity: Vibe::class, inversedBy: 'rooms')]
-    #[Groups(['room:read'])]
-    private Collection $vibe;
-
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->devices = new ArrayCollection();
-        $this->vibe = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,29 +157,5 @@ class Room
     public function __toString(): string
     {
         return $this->label;
-    }
-
-    /**
-     * @return Collection<int, Vibe>
-     */
-    public function getVibe(): Collection
-    {
-        return $this->vibe;
-    }
-
-    public function addVibe(Vibe $vibe): static
-    {
-        if (!$this->vibe->contains($vibe)) {
-            $this->vibe->add($vibe);
-        }
-
-        return $this;
-    }
-
-    public function removeVibe(Vibe $vibe): static
-    {
-        $this->vibe->removeElement($vibe);
-
-        return $this;
     }
 }

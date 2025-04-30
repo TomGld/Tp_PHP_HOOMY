@@ -158,10 +158,10 @@ class AppFixtures extends Fixture
                 'type' => 'W',
             ],
             [
-                'type' => 'RGB', 
+                'type' => 'HEX',
             ],
             [
-                'type' => '%', 
+                'type' => '%',
             ],
             [
                 'type' => 'dB',
@@ -187,8 +187,8 @@ class AppFixtures extends Fixture
     {
         $array_settingTypes = [
             [
-               'dataType' => 1,
-               'label' => 'température',
+                'dataType' => 1,
+                'label' => 'température',
                 'devices' => [1, 4]
             ],
             [
@@ -212,7 +212,7 @@ class AppFixtures extends Fixture
                 'devices' => [2, 5]
 
             ],
-           
+
         ];
 
         foreach ($array_settingTypes as $key => $value) {
@@ -267,6 +267,12 @@ class AppFixtures extends Fixture
                 'settingType' => 5,
                 'data' => 80,
                 'device' => 5,
+            ],
+            [
+                'vibe' => 1,
+                'settingType' => 3,
+                'data' => '#FF0001',
+                'device' => 1,
             ],
         ];
 
@@ -351,25 +357,50 @@ class AppFixtures extends Fixture
                 'category' => 1,
             ],
             [
-                'image_path' => 'Chambre 2.jpg',
+                'image_path' => 'BedX2.png',
                 'category' => 2,
             ],
             [
-                'image_path' => 'Chambre .jpg',
+                'image_path' => 'CalendarX2.png',
                 'category' => 2,
+            ],
+            [
+                'image_path' => 'Duo.png',
+                'category' => 2,
+            ],
+            [
+                'image_path' => 'Fiesta.png',
+                'category' => 2,
+            ],
+            [
+                'image_path' => 'Lamp.png',
+                'category' => 2,
+            ],
+            [
+                'image_path' => 'LogoSmallX1.png',
+                'category' => 3,
+            ],
+            [
+                'image_path' => 'logoSmallX2.png',
+                'category' => 3,
+            ],
+            [
+                'image_path' => 'logoX2.png',
+                'category' => 3,
+            ],
+            [
+                'image_path' => 'Chambre.jpg',
+                'category' => 4,
             ],
             [
                 'image_path' => 'Cuisine.jpg',
-                'category' => 2,
+                'category' => 4,
             ],
             [
                 'image_path' => 'Salon.jpg',
-                'category' => 2,
+                'category' => 4,
             ],
-            [
-                'image_path' => 'BedX2.jpg',
-                'category' => 3,
-            ]
+
         ];
 
         foreach ($array_images as $key => $value) {
@@ -393,29 +424,22 @@ class AppFixtures extends Fixture
         $array_rooms = [
             [
                 'label' => 'Salon',
-                'image' => 5,
-                'vibes' => [1, 2], 
+                'image' => 12,
             ],
             [
                 'label' => 'Chambre',
-                'image' => 4,
-                'vibes' => [2, 3],
+                'image' => 13,
             ],
             [
                 'label' => 'Cuisine',
-                'image' => 6,
-                'vibes' => [3, 1],
+                'image' => 14,
             ]
-            ];
+        ];
 
         foreach ($array_rooms as $key => $value) {
             $room = new Room();
             $room->setLabel($value['label']);
             $room->setImage($this->getReference('image_' . $value['image'], Image::class));
-            // on va boucler sur $value['vibes'] pour la relation ManyToMany avec Vibe
-            foreach ($value['vibes'] as $vibe) {
-                $room->addVibe($this->getReference('vibe_' . $vibe, Vibe::class));
-            }
             // on persiste les données
             $manager->persist($room);
             // on définit une référence pour chaque type de données
@@ -475,19 +499,19 @@ class AppFixtures extends Fixture
         $array_vibes = [
             [
                 'profile' => 1,
-                'image' => 1,
+                'image' => 4,
                 'standard' => 1,
                 'label' => 'Chill',
             ],
             [
                 'profile' => 1,
-                'image' => 2,
+                'image' => 5,
                 'standard' => 2,
                 'label' => 'Cozy',
             ],
             [
                 'profile' => 1,
-                'image' => 3,
+                'image' => 6,
                 'standard' => 3,
                 'label' => 'Sad',
             ],
