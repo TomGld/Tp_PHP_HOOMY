@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250429074726 extends AbstractMigration
+final class Version20250429142327 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -42,7 +42,7 @@ final class Version20250429074726 extends AbstractMigration
             CREATE TABLE room (id INT AUTO_INCREMENT NOT NULL, image_id INT DEFAULT NULL, label VARCHAR(25) NOT NULL, UNIQUE INDEX UNIQ_729F519B3DA5256D (image_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE setting_data (id INT AUTO_INCREMENT NOT NULL, setting_type_id INT NOT NULL, vibe_id INT NOT NULL, device_id INT DEFAULT NULL, data VARCHAR(25) NOT NULL, INDEX IDX_6C47DF859D1E3C7B (setting_type_id), INDEX IDX_6C47DF854B255BC3 (vibe_id), UNIQUE INDEX UNIQ_6C47DF8594A4C7D4 (device_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            CREATE TABLE setting_data (id INT AUTO_INCREMENT NOT NULL, setting_type_id INT NOT NULL, vibe_id INT NOT NULL, device_id INT NOT NULL, data VARCHAR(25) NOT NULL, INDEX IDX_6C47DF859D1E3C7B (setting_type_id), INDEX IDX_6C47DF854B255BC3 (vibe_id), INDEX IDX_6C47DF8594A4C7D4 (device_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE setting_type (id INT AUTO_INCREMENT NOT NULL, data_type_id INT NOT NULL, label_key VARCHAR(25) NOT NULL, INDEX IDX_4D6A7BCFA147DA62 (data_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
