@@ -158,7 +158,7 @@ class AppFixtures extends Fixture
                 'type' => 'W',
             ],
             [
-                'type' => 'HEX',
+                'type' => 'HEXA',
             ],
             [
                 'type' => '%',
@@ -399,6 +399,10 @@ class AppFixtures extends Fixture
             [
                 'image_path' => 'Salon.jpg',
                 'category' => 4,
+            ],
+            [
+                'image_path' => 'Noctys.png',
+                'category' => 3,
             ],
 
         ];

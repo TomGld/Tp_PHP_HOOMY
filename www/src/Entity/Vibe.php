@@ -38,7 +38,7 @@ class Vibe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'settingData:read', 'room:read'])]
     private ?int $id = null;
 
     /**

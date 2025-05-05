@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\SettingDataRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +21,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Get(),
         new GetCollection(),
-        new Patch()
+        new Patch(),
+        new Post(),
     ],
     normalizationContext: ['groups' => ['settingData:read']],
     denormalizationContext: ['groups' => ['settingData:write']]
@@ -31,6 +33,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     properties: [
         'name' => 'iexact',
         'id' => 'exact',
+        'vibe.id' => 'exact',
+        'device.id' => 'exact',
+        'settingType.id' => 'exact',
     ]
 )]
 class SettingData
@@ -43,7 +48,7 @@ class SettingData
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['settingData:read', 'vibe:read'])]
+    #[Groups(['settingData:read','settingData:write' ,'vibe:read'])]
     private ?SettingType $settingType = null;
 
     #[ORM\Column(length: 25)]
@@ -52,7 +57,7 @@ class SettingData
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['settingData:read'])]
+    #[Groups(['settingData:read', 'settingData:write', 'room:read'])]
     private ?Vibe $vibe = null;
 
     #[ORM\ManyToOne(inversedBy: 'settingData')]
