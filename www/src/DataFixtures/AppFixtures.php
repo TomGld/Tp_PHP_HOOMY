@@ -400,6 +400,10 @@ class AppFixtures extends Fixture
                 'image_path' => 'Salon.jpg',
                 'category' => 4,
             ],
+            [
+                'image_path' => 'Noctys.png',
+                'category' => 3,
+            ],
 
         ];
 
