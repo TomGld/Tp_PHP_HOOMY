@@ -16,10 +16,11 @@ class DataType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['room:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 25)]
-    #[Groups(['vibe:read'])]
+    #[Groups(['vibe:read', 'room:read'])]
     private ?string $dataType = null;
 
     /**

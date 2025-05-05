@@ -158,7 +158,7 @@ class AppFixtures extends Fixture
                 'type' => 'W',
             ],
             [
-                'type' => 'HEX',
+                'type' => 'HEXA',
             ],
             [
                 'type' => '%',

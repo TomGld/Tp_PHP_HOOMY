@@ -27,7 +27,7 @@ CREATE TABLE `data_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `data_type` varchar(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,9 +39,10 @@ LOCK TABLES `data_type` WRITE;
 INSERT INTO `data_type` VALUES
 (1,'°C'),
 (2,'W'),
-(3,'RGB'),
+(3,'HEXA'),
 (4,'%'),
-(5,'dB');
+(5,'dB'),
+(6,'On/Off');
 /*!40000 ALTER TABLE `data_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,10 +76,10 @@ LOCK TABLES `device` WRITE;
 INSERT INTO `device` VALUES
 (1,1,'Lampe de salon','Lampe',1,'lamp00123','Philips'),
 (2,2,'Haut-parleur Bluetooth','Haut-parleur',0,'spk98765','JBL'),
-(3,3,'Lampe de chevet','Lampe',1,'lamp00456','IKEA'),
-(4,1,'Prise connectée cuisine','Prise connectée',0,'plug11223','TP-Link'),
-(5,2,'Haut-parleur salon','Haut-parleur',1,'spk22334','Sony'),
-(6,3,'Prise connectée chambre','Prise connectée',1,'plug33445','Meross');
+(3,3,'Lampe d\'ambiance cuisine','Lampe',1,'lamp00456','IKEA'),
+(4,1,'Prise connectée salon','Prise connectée',0,'plug11223','TP-Link'),
+(5,2,'Haut-parleur chambre','Haut-parleur',1,'spk22334','Sony'),
+(6,3,'Prise connectée cuisine','Prise connectée',1,'plug33445','Meross');
 /*!40000 ALTER TABLE `device` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,7 +105,7 @@ CREATE TABLE `doctrine_migration_versions` (
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
 INSERT INTO `doctrine_migration_versions` VALUES
-('DoctrineMigrations\\Version20250415124144','2025-04-15 13:03:56',121);
+('DoctrineMigrations\\Version20250429142327','2025-04-29 14:23:31',113);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +184,7 @@ CREATE TABLE `image` (
   `image_path` varchar(255) NOT NULL,
   `category` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,28 +194,20 @@ CREATE TABLE `image` (
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
 INSERT INTO `image` VALUES
-(1,'Fiesta.png',2),
-(2,'Lamp.png',2),
-(3,'Duo.png',2),
-(4,'Chambre.jpg',3),
-(5,'Cuisine.jpg',3),
-(6,'Salon.jpg',3),
-(7,'avatar1.jpg',1),
-(8,'avatar2.jpg',1),
-(9,'avatar3.jpg',1),
-(10,'avatar4.jpg',1),
-(11,'avatar5.jpg',1),
-(12,'avatar6.jpg',1),
-(13,'avatar7.jpg',1),
-(14,'avatar8.jpg',1),
-(15,'avatar9.jpg',1),
-(16,'avatar10.jpg',1),
-(17,'avatar11.jpg',1),
-(18,'avatar12.jpg',1),
-(19,'avatar13.jpg',1),
-(20,'avatar14.jpg',1),
-(21,'avatar15.png',1),
-(22,'61140-3840x2160-spiderman-logo-wallpaper-desktop-4k.jpg',1);
+(1,'avatar1.jpg',1),
+(2,'avatar2.jpg',1),
+(3,'avatar3.jpg',1),
+(4,'BedX2.png',2),
+(5,'CalendarX2.png',2),
+(6,'Duo.png',2),
+(7,'Fiesta.png',2),
+(8,'Lamp.png',2),
+(9,'LogoSmallX1.png',3),
+(10,'logoSmallX2.png',3),
+(11,'logoX2.png',3),
+(12,'Chambre.jpg',4),
+(13,'Cuisine.jpg',4),
+(14,'Salon.jpg',4);
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,10 +236,10 @@ CREATE TABLE `profile` (
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
 INSERT INTO `profile` VALUES
-(1,22,'Tom',1234),
-(2,21,'Mayer',1234),
-(3,7,'user3',1234),
-(4,8,'user4',1234);
+(1,1,'Tom',1234),
+(2,2,'Mayer',1234),
+(3,2,'user3',1234),
+(4,3,'user4',1234);
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,44 +267,10 @@ CREATE TABLE `room` (
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
 INSERT INTO `room` VALUES
-(1,6,'Salon'),
-(2,4,'Chambre'),
-(3,5,'Cuisine');
+(1,12,'Salon'),
+(2,13,'Chambre'),
+(3,14,'Cuisine');
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `room_vibe`
---
-
-DROP TABLE IF EXISTS `room_vibe`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8mb4 */;
-CREATE TABLE `room_vibe` (
-  `room_id` int(11) NOT NULL,
-  `vibe_id` int(11) NOT NULL,
-  PRIMARY KEY (`room_id`,`vibe_id`),
-  KEY `IDX_2101A66554177093` (`room_id`),
-  KEY `IDX_2101A6654B255BC3` (`vibe_id`),
-  CONSTRAINT `FK_2101A6654B255BC3` FOREIGN KEY (`vibe_id`) REFERENCES `vibe` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_2101A66554177093` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `room_vibe`
---
-
-LOCK TABLES `room_vibe` WRITE;
-/*!40000 ALTER TABLE `room_vibe` DISABLE KEYS */;
-INSERT INTO `room_vibe` VALUES
-(1,1),
-(1,2),
-(2,2),
-(2,3),
-(3,1),
-(3,3);
-/*!40000 ALTER TABLE `room_vibe` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -325,16 +284,16 @@ CREATE TABLE `setting_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `setting_type_id` int(11) NOT NULL,
   `vibe_id` int(11) NOT NULL,
-  `device_id` int(11) DEFAULT NULL,
+  `device_id` int(11) NOT NULL,
   `data` varchar(25) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_6C47DF8594A4C7D4` (`device_id`),
   KEY `IDX_6C47DF859D1E3C7B` (`setting_type_id`),
   KEY `IDX_6C47DF854B255BC3` (`vibe_id`),
+  KEY `IDX_6C47DF8594A4C7D4` (`device_id`),
   CONSTRAINT `FK_6C47DF854B255BC3` FOREIGN KEY (`vibe_id`) REFERENCES `vibe` (`id`),
   CONSTRAINT `FK_6C47DF8594A4C7D4` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`),
   CONSTRAINT `FK_6C47DF859D1E3C7B` FOREIGN KEY (`setting_type_id`) REFERENCES `setting_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -344,11 +303,15 @@ CREATE TABLE `setting_data` (
 LOCK TABLES `setting_data` WRITE;
 /*!40000 ALTER TABLE `setting_data` DISABLE KEYS */;
 INSERT INTO `setting_data` VALUES
-(1,1,1,1,'25'),
+(1,1,1,1,'70'),
 (2,2,2,2,'50'),
 (3,3,3,3,'#FF0000'),
-(4,4,1,4,'75'),
-(5,5,2,5,'80');
+(4,6,1,4,'1'),
+(5,5,2,5,'80'),
+(6,3,1,1,'#f81414'),
+(7,2,1,2,'50'),
+(8,5,1,2,'35'),
+(9,5,1,5,'28');
 /*!40000 ALTER TABLE `setting_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,7 +329,7 @@ CREATE TABLE `setting_type` (
   PRIMARY KEY (`id`),
   KEY `IDX_4D6A7BCFA147DA62` (`data_type_id`),
   CONSTRAINT `FK_4D6A7BCFA147DA62` FOREIGN KEY (`data_type_id`) REFERENCES `data_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -380,7 +343,8 @@ INSERT INTO `setting_type` VALUES
 (2,2,'puissance'),
 (3,3,'couleur'),
 (4,4,'luminosité'),
-(5,5,'volume');
+(5,5,'volume'),
+(6,6,'État');
 /*!40000 ALTER TABLE `setting_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -410,15 +374,15 @@ LOCK TABLES `setting_type_device` WRITE;
 /*!40000 ALTER TABLE `setting_type_device` DISABLE KEYS */;
 INSERT INTO `setting_type_device` VALUES
 (1,1),
-(1,4),
 (2,2),
-(2,4),
 (3,1),
 (3,3),
 (4,1),
 (4,3),
 (5,2),
-(5,5);
+(5,5),
+(6,4),
+(6,6);
 /*!40000 ALTER TABLE `setting_type_device` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +441,7 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(1,'admin','[\"ROLE_ADMIN\"]','$2y$13$v2moE9dBq7Vy4W7GUqxs8.5ERZMECTKnYqhwZeKpGrimKL2sFTzBW');
+(1,'admin','[\"ROLE_ADMIN\"]','$2y$13$ngMb3UtAfuzAXGO9sCsFJuTlHGU3FT5rWbrYVUq48WkVdcFi2zY92');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -511,9 +475,9 @@ CREATE TABLE `vibe` (
 LOCK TABLES `vibe` WRITE;
 /*!40000 ALTER TABLE `vibe` DISABLE KEYS */;
 INSERT INTO `vibe` VALUES
-(1,1,1,1,'Chill'),
-(2,1,2,2,'Cozy'),
-(3,1,3,3,'Sad');
+(1,1,4,1,'Chill'),
+(2,1,5,2,'Cozy'),
+(3,1,6,3,'Sad');
 /*!40000 ALTER TABLE `vibe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -526,4 +490,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-04-16  7:58:52
+-- Dump completed on 2025-05-05  7:08:36
